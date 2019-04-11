@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-3-15 16:30:05 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="cn.ytc.webstore.model.Good" table="GOOD">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="name" />
+        </property>
+        <property name="price" type="java.lang.Double">
+            <column name="price" />
+        </property>
+        <list name="gallery" table="GALLERY">
+        	<key column="uid"></key>
+	        <list-index column="idx"></list-index>
+            <element column="pictureAddress" type="string"></element>
+        </list>
+        <property name="category" type="int">
+            <column name="category" />
+        </property>
+    </class>
+
+</hibernate-mapping>
