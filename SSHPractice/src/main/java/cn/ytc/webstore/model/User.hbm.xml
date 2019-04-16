@@ -4,8 +4,8 @@
 
 <hibernate-mapping>
 	<class name="cn.ytc.webstore.model.User" table="USER">
-        <id name="id" type="int">
-            <column name="ID" />
+        <id name="userId" type="int">
+            <column name="userId" />
             <generator class="native" />
         </id>
         <property name="username" type="java.lang.String">

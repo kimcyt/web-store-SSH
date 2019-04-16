@@ -1,19 +1,23 @@
 package cn.ytc.webstore.model;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Component;
 
 @Component
 public class User {
-	private int id;
+
+	private Integer userId;
 	private String username;
 	private String password;
 	
 	
-	public int getId() {
-		return id;
+	public Integer getUserId() {
+		return userId;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setUserId(Integer id) {
+		this.userId = id;
 	}
 	public String getUsername() {
 		return username;
@@ -26,6 +30,10 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", username=" + username + ", password=" + password + "]";
 	}
 	
 	

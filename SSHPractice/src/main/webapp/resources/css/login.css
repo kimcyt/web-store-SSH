@@ -1,0 +1,41 @@
+
+
+.header img{
+    width: 100%;
+    height: 100%;
+}
+
+.header p{
+    text-align: center;
+}
+
+.container{
+    background-color: #f8f9fa;
+}
+
+.middle-part .login{
+    /* border: 1px #ddd solid; */
+    background: #FFFDFF;
+}
+
+.middle-part .login form div{
+    margin: 8%;
+}
+
+.middle-part .login form img{
+    width: 20%;
+}
+
+.middle-part .login form input{
+    width: 70%;
+    height: 100%;
+}
+
+.middle-part .login form input[type=submit]{
+    margin-left: 20%; 
+}
+
+.middle-part .login form .other-options a:first-child{
+    margin-right: 35%; 
+}
+

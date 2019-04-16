@@ -43,6 +43,12 @@ public class Good {
 	public void setCategory(int category) {
 		this.category = category;
 	}
+	@Override
+	public String toString() {
+		return "Good [id=" + id + ", name=" + name + ", price=" + price + ", gallery=" + gallery + ", category="
+				+ category + "]";
+	}
+	
 	
 	
 }

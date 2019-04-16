@@ -2,20 +2,31 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 		
+	<!--    
 	<context:component-scan base-package="cn.ytc.webstore" use-default-filters="false">
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller"/>
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.web.bind.annotation.ControllerAdvice"/>	
 	</context:component-scan>
+	-->
+
+	<context:component-scan base-package="cn.ytc.webstore.dao">
+	</context:component-scan>
+	<context:component-scan base-package="cn.ytc.webstore.model">
+	</context:component-scan>
+	<context:component-scan base-package="cn.ytc.webstore.service">
+	</context:component-scan>
+
+	
 	
 	<!-- load properties file -->
 	<context:property-placeholder location="classpath:jdbc.properties"/>
@@ -30,7 +41,7 @@
 	
 	
 	<!-- configure hibernate sessionFactory -->
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" autowire="byType">
 		<property name="dataSource" ref="dataSource"></property>
 		<property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
 		<!-- locate the hibernate POJO class configuration file -->
@@ -41,9 +52,33 @@
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
+	<!-- other beans
+	<bean id="userService" class="cn.ytc.webstore.service.UserServiceImpl" autowire="byName"></bean>
+
+	<bean id="userDao" class="cn.ytc.webstore.dao.UserDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	-->
+	
+	<!-- 
+	必须要将使用了sessionFactory.getCurrentSession()获取session的代码所在的方法加入
+	到事务管理器中；否则获取不到session了
+	all dao methods must be added to the session manager, or initSynchronization()
+	will not be called, error "Could not obtain transaction-synchronized Session for 
+	current thread" will be thrown.
+	使用了sessionFactory.getCurrentSession()获取session时，需要事务的支持；也就是说这段
+	代码所在的方法要么被事务切面切中，要么class上面用了注解事务。
+	 -->
+	 <!-- declare to use annotaion for transcation -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	 
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
-			<tx:method name="get*" />
+			<tx:method name="add*" propagation="REQUIRED"/>
+			<tx:method name="delete*" propagation="REQUIRED"/>
+			<tx:method name="update*" propagation="REQUIRED"/>
+			<tx:method name="get*" propagation="REQUIRED" read-only="true"/>
 		</tx:attributes>
 	</tx:advice>
+	
 </beans>

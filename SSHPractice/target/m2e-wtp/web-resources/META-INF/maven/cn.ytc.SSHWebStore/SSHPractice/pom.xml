@@ -44,7 +44,47 @@
 	    <artifactId>spring-orm</artifactId>
 	    <version>5.1.5.RELEASE</version>
 	</dependency>	
-
+	<dependency>
+  		<groupId>javax.servlet.jsp</groupId>
+  		<artifactId>javax.servlet.jsp-api</artifactId>
+  		<version>2.3.1</version>
+  		<scope>provided</scope>
+  	</dependency>
+  	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>jstl</artifactId>
+	    <version>1.2</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.logging.log4j</groupId>
+	    <artifactId>log4j-core</artifactId>
+	    <version>2.11.1</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.hibernate.validator</groupId>
+	    <artifactId>hibernate-validator</artifactId>
+	    <version>6.0.16.Final</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.hibernate.validator</groupId>
+	    <artifactId>hibernate-validator-annotation-processor</artifactId>
+	    <version>6.0.16.Final</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>2.9.8</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-core</artifactId>
+	    <version>2.9.8</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-annotations</artifactId>
+	    <version>2.9.8</version>
+	</dependency>
   </dependencies>
   
 </project>

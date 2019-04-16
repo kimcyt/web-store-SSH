@@ -1,39 +1,50 @@
 package cn.ytc.webstore.dao;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-public class BaseDao<T> {
+/*
+ * if @transcational is added, all beans of implementational classes will
+ * become proxy and fail to be loaded
+ * either use openSession() and close it everytime after transcation
+ * or only autowire abstract classes (interfaces)
+ */
+
+
+@Repository("dao")
+public class BaseDao<T> implements BaseDaoInterface<T>{
 	
 	@Autowired
-	private SessionFactory session;
+	private SessionFactory sessionFactory;
+	
 	
 	public Session getSession() {
-		return session.getCurrentSession();
+		return sessionFactory.openSession();
 	}
 	
 	public void add(T obj) {
-		getSession().save(obj);
+		Session sess = getSession();
+		sess.save(obj);
+		sess.close();
 	}
 	
 	public void update(T obj) {
-		getSession().update(obj);
+		Session sess = getSession();
+		sess.update(obj);
+		sess.close();
 	}
 	
-	public void delete(int id) {
-		getSession().delete(this.getOne(id));
+	public void delete(T obj) {
+		Session sess = getSession();
+		sess.delete(obj);
+		sess.close();
 	}
-	
-	public T getOne(int id) {
-		return (T) getSession().load(this.getTClass(), id);
-	}
-	
-	public Class<T> getTClass(){
-		Class<T> tClass = (Class<T>)((ParameterizedType)this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-		return tClass;
-	}
+
 	
 }
