@@ -17,7 +17,7 @@ public class UserServiceImpl extends BaseService<User> implements UserServiceInt
 	@Autowired
 	UserDaoImpl userDao;
 	
-	public boolean verify(int id, String password) {
+	public boolean verify(String id, String password) {
 		
 		User user = userDao.getOne(id);
 		if(user==null)
@@ -30,7 +30,11 @@ public class UserServiceImpl extends BaseService<User> implements UserServiceInt
 		userDao.add(user);
 	}
 	
-	public User getUser(int id) {
+	public User getUser(String id) {
 		return userDao.getOne(id);
+	}
+	
+	public boolean userIdUsed(String id) {
+		return userDao.getOne(id)!=null;
 	}
 }

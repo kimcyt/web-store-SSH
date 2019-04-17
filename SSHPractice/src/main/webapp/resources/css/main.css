@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+.ads .carousel-inner img{
+    width: 100%;
+    height: 60%;
+}
+
+.title h2{
+    margin: 2%;
+    margin-left: 40%;
+}
+
+.items{
+    list-style: none;
+    display: inline-block;
+    background: white;
+    padding: 2%;
+}
+
+.items img{
+    width: 100%;
+}
+
+.items .item-name{
+    font-family: sans-serif;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 24px;
+}
+
+.items .item-price{
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 22px;
+}
+

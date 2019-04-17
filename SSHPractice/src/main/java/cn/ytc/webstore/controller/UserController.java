@@ -21,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cn.ytc.webstore.model.User;
 import cn.ytc.webstore.service.UserServiceImpl;
 import cn.ytc.webstore.service.UserServiceInterface;
+import cn.ytc.webstore.utils.RequestResult;
+
 
 @Controller
 public class UserController extends BaseController{
@@ -30,7 +32,29 @@ public class UserController extends BaseController{
 	
 	@ResponseBody
 	@RequestMapping(path="/user", method=RequestMethod.POST)
-	public String login(@RequestParam String userId, @RequestParam String password,  HttpServletResponse res, HttpSession session) {
+	public RequestResult signUp(@RequestParam String userId, @RequestParam String username, @RequestParam String password,  
+			HttpServletResponse res, HttpSession session) {
+		System.out.println("iam signing up: "+userId +" "+username);
+		
+		RequestResult rr = new RequestResult();
+		if(userService.userIdUsed(userId)) {
+			System.out.println("ID already taken-----------");
+			rr.setError("The userId has already been taken, please try again");
+		} else {
+			System.out.println("creating new account-------------");
+			User user = new User(userId, username, password);
+			userService.signUp(user);
+			session.setAttribute("currentUser", user);	
+			rr.setUrl("/main");
+		}
+//		return JSONObject.toJSONString(rr);
+		return rr;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(path="/user/{id}", method=RequestMethod.POST)
+	public RequestResult login(@RequestParam String userId, @RequestParam String password,  HttpServletResponse res, HttpSession session) {
 		System.out.println("login is working " + userId +"  "+ password);
 
 //		if(user.getUserId()==null || user.getPassword()==null) {
@@ -43,18 +67,19 @@ public class UserController extends BaseController{
 //			return "login";
 //		}
 		
-		Integer userid = Integer.parseInt(userId);
-		boolean verified = userService.verify(userid, password);
+		RequestResult rr = new RequestResult();
+		
+		boolean verified = userService.verify(userId, password);
 		if(verified) {
-			User user = userService.getUser(userid);
+			User user = userService.getUser(userId);
 			session.setAttribute("currentUser", user);
 //			model.addAttribute("user", user);
-			
-			return "redirect:/main";
+			rr.setUrl("/main");
 		} else {
 //			model.addAttribute("error", "Invalid userId or password.");
 //			return "forward:/";
-			return "Invalid userId or password.";
+			rr.setError("Invalid userId or password.");
 		}
+		return rr;
 	}
 }

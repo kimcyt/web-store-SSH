@@ -8,15 +8,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class User {
 
-	private Integer userId;
+	private String userId;
 	private String username;
 	private String password;
 	
 	
-	public Integer getUserId() {
+	
+	public User() {
+		super();
+	}
+	
+	public User(String userId, String username, String password) {
+		super();
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
+	}
+	public String getUserId() {
 		return userId;
 	}
-	public void setUserId(Integer id) {
+	public void setUserId(String id) {
 		this.userId = id;
 	}
 	public String getUsername() {

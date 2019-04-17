@@ -11,7 +11,7 @@ import cn.ytc.webstore.model.User;
 @Repository("userDao")
 public class UserDaoImpl extends BaseDao<User> implements UserDaoInterface{
 
-	public User getOne(int id) {
+	public User getOne(String id) {
 		return getSession().get(new User().getClass(), id);
 	}
 	

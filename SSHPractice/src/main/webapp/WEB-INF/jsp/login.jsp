@@ -34,12 +34,12 @@
 	                		<input type="submit" value="Login"> 
 	                	</div>
 	                	<div class="other-options">
-	                    	<a href="">forgot password</a>
-	                    	<a href="signUp.jsp">signup</a>
+	                    	<a href="">Forgot Password</a>
+	                    	<a href="${pageContext.request.contextPath}/signup">Sign Up</a>
 	                	</div>
+	                	<p id="error">${error}<p>
 	            	</form:form>
 	        	</div>
-				<p id="error">${error}<p>
 			</div>
 		</div>
 		
@@ -55,22 +55,20 @@
 	<script type="text/javascript">
 	function validateInputs(){
 		console.log("validating inputs");
-		let val = parseInt($("#userId").val());
-		if(isNaN(val)){
-			$("#error").text("userId must be number. Please try again.");
-			setTimeout(function(){
-				$("#error").text("");
-			}, 3000);
-			return false;
-		}
-		let args = {userId: val, password: $("#password").val()};
-		$.post("${pageContext.request.contextPath}/user", args, function(data){
-			console.log(data);
-			$("#error").text(data);
-			setTimeout(function(){
-				$("#error").text("");
-			}, 3000);
+		let userId = $("#userId").val();
+		let args = {userId: userId, password: $("#password").val()};
+		$.post("${pageContext.request.contextPath}/user/"+userId, args, function(result){
+			console.log(result.error);
+			if(result.error==null){
+				location.href = "${pageContext.request.contextPath}" + result.url;	
+			} else{
+				$("#error").text(result.error);
+				setTimeout(function(){
+					$("#error").text("");
+				}, 3000);
+			}
 		})
+			
 		return false;
 	}	
 		

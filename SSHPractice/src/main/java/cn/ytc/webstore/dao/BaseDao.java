@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,10 @@ public class BaseDao<T> implements BaseDaoInterface<T>{
 	
 	public void add(T obj) {
 		Session sess = getSession();
+		Transaction tran = sess.beginTransaction();
 		sess.save(obj);
+		System.out.println("user added");
+		tran.commit();
 		sess.close();
 	}
 	
