@@ -5,8 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<link href="common.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
 	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
@@ -14,14 +13,14 @@
 </head>
 <body>
 	<div class="header_top row">
-		<div class="col-md-4 offset-md-8">
+		<div class="col-md-5 offset-md-7">
 			<!-- check if user already login -->
-			<c:if test="${empty user }">
+			<c:if test="${empty currentUser }">
 				<a href="login.jsp">Login</a>
 				<a href="signup.jsp">Sign up</a>
 			</c:if>
-			<c:if test="${!empty user }">
-				<a href=""> ${user.username }</a>
+			<c:if test="${!empty currentUser }">
+				Welcome! <a href=""> <b>${currentUser.username}</b></a>
 				<a href=""> Logout</a>
 			</c:if>
 			<a href="">Shopping Cart</a>
@@ -51,8 +50,8 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav">
-					<li class="nav-item active">
-						<a class="nav-link" href="#">Main Page
+					<li class="nav-item">
+						<a class="nav-link active" href="#">All Items
 							<span class="sr-only">(current)</span>
 						</a>
 					</li>
@@ -65,6 +64,7 @@
 			</div>
 		</nav>
 	</div>
+	
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

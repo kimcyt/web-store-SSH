@@ -151,7 +151,7 @@
 
       
       
-      <Context docBase="SSHPractice" path="/SSHPractice" reloadable="false" source="org.eclipse.jst.jee.server:SSHPractice"/></Host>
+      <Context docBase="SSHPractice" path="/SSHPractice" reloadable="true" source="org.eclipse.jst.jee.server:SSHPractice"/></Host>
       <!-- docBase: the file path to which to find the app, default is the set dir
            path: the prefix in the url
            reloadable: the server reloads file when the app files change -->

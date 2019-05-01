@@ -1,9 +1,13 @@
 package cn.ytc.webstore.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import cn.ytc.webstore.model.Category;
+import cn.ytc.webstore.model.Good;
 import cn.ytc.webstore.model.User;
 
 @Controller
@@ -27,5 +31,21 @@ public class IndexController extends BaseController{
 	public String main() {
 		System.out.println("iam in main");
 		return "main";
+	}
+
+//	@RequestMapping("/items")
+//	public String items() {
+//		System.out.println("iam in items management");
+//		return "itemsManagement";
+//	}
+	
+	
+	@RequestMapping("/addGood")
+	public String addGood(HttpSession session, Model model) {
+		System.out.println("iam in add good");
+		if(session.getAttribute("allCategories")==null)
+			session.setAttribute("allCategories", Category.getCategories());
+		model.addAttribute("good", new Good());
+		return "addGood";
 	}
 }

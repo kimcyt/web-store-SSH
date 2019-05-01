@@ -7,17 +7,21 @@ import java.util.Map.Entry;
 
 public class Category {
 	private static HashMap categoryMap = new HashMap();
-	private static ArrayList<String> categories = new ArrayList<String>();
+	private static ArrayList<Category> categories = new ArrayList<Category>();
+	
+	private int NO;
+	private String name;
+	
 	
 	static {
 		Properties prop = new Properties();
 		FileInputStream in = null;
 		try {
-			in = new FileInputStream("categories.properties");
+			in = new FileInputStream("C:\\Users\\yunti\\Desktop\\java\\spring\\spring projects\\SSH web-store\\SSHPractice\\src\\main\\resources\\categories.properties");
 			prop.load(in);
 			for(Entry category: prop.entrySet()) {
 				categoryMap.put(category.getKey(), category.getValue());
-				categories.add((String) category.getValue());
+				categories.add(new Category(Integer.parseInt((String)category.getKey()), (String)category.getValue()));
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -33,11 +37,35 @@ public class Category {
 		}
 	}
 	
+	public Category(int nO, String name) {
+		super();
+		NO = nO;
+		this.name = name;
+	}
+	
+	
+
+	public int getNO() {
+		return NO;
+	}
+
+	public void setNO(int nO) {
+		NO = nO;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public static String getCategory(int id) {
 		return (String) categoryMap.get(id);
 	}
 	
-	public List getCategories() {
+	public static List getCategories() {
 		return categories;
 	}
 }

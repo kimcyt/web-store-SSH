@@ -66,15 +66,24 @@ public class UserController extends BaseController{
 //			model.addAttribute("error", error.getFieldError());
 //			return "login";
 //		}
-		
+
+//		TODO: CHANGE the way to recognize type of user
 		RequestResult rr = new RequestResult();
+		
+		if(userService.isAdmin(userId, password)) {
+			System.out.println("admin verified----");
+			rr.setUrl("/goods/1/5/admin");
+//			"/goods/{pageNo}/{itemsPerPage}/{userType}"
+			return rr;
+		}
 		
 		boolean verified = userService.verify(userId, password);
 		if(verified) {
 			User user = userService.getUser(userId);
 			session.setAttribute("currentUser", user);
 //			model.addAttribute("user", user);
-			rr.setUrl("/main");
+			rr.setUrl("/main");  
+//			/goods/1/10/customer
 		} else {
 //			model.addAttribute("error", "Invalid userId or password.");
 //			return "forward:/";

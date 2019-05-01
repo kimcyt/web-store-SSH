@@ -11,4 +11,6 @@ public interface UserServiceInterface extends BaseServiceInterface<User>{
 	
 	public boolean userIdUsed(String id);
 	
+	public boolean isAdmin(String id, String password);
+	
 }
