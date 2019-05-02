@@ -25,7 +25,7 @@
 	-->
 	<form:form modelAttribute="good" enctype="multipart/form-data" action="${pageContext.request.contextPath}/good" method="POST">
 		<span>Item name: </span><form:input type="text" path="name" required="true" /><br>
-		<span>Picture: </span><input type="file" name="image" /><br>
+		<span>Picture: </span><input type="file" name="image" required/><br>
 		<span>Price: </span><form:input type="text" path="price" required="true"/><br>
 		<span>Category: </span> 
 		<c:if test="${!empty allCategories}">
@@ -39,13 +39,16 @@
 		<input type="submit" value="Add Item"> 
 	</form:form>
 	<p>${error}"</p>
-	
+	<br>
+	<a href="${pageContext.request.contextPath}/goods/1/5">Go Back</a>
+	<!-- 
 	<c:if test="${empty category }">
-		<a href="http://localhost:8080/webstorepractise/admin/manageGoods?action=getPageData&currentPage=1">Go Back</a>
+		<a href="${pageContext.request.contextPath}/goods/1/5">Go Back</a>
 	</c:if>
 	<c:if test="${!empty category }">
 		<a href="http://localhost:8080/webstorepractise/admin/manageGoods?action=getPageData&currentPage=1&category=${category}">Go Back</a>
 	</c:if>
+	 -->
 
 </body>
 </html>

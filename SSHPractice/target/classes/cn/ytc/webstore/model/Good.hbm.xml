@@ -14,7 +14,7 @@
         <property name="price" type="java.lang.Double">
             <column name="price" />
         </property>
-        <list name="gallery" table="GALLERY">
+        <list name="gallery" table="GALLERY" cascade="delete" lazy="false">
         	<key column="uid"></key>
 	        <list-index column="idx"></list-index>
             <element column="pictureAddress" type="string"></element>

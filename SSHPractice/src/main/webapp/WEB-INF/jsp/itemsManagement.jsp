@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Admin Panel</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/pageStyle.css">
 <style type="text/css">
 .content{
@@ -46,6 +46,11 @@
 	color: #00CCCC
 }
 
+#image{
+	height: 100px;
+	width: 100px;
+}
+
 </style>
 </head>
 <body>
@@ -69,24 +74,20 @@
 				    <th>Name</th>
 				    <th>Price</th>
 				    <th>Category</th>
-				    <th>OnSale</th>
 				    <th>Edit</th>
 				    <th>Delete</th>
 				  </tr>
-					  <c:forEach items="${pageInfo.pageGoods}" var="good" varStatus="status">
+					<c:forEach items="${pageInfo.pageGoods}" var="good" varStatus="status">
 						<tr >
 						  <th>${good.id}</th>
-						  <th><img src="" alt=""></th>
+						  <th><img id="image" src="${pageContext.request.contextPath}/img/${good.gallery.get(0)}" alt="image not found"></th>
 						  <th>${good.name }</th>
 						  <th>${good.price }</th>
-						  <th>
-						  ${categories.get(good.category) }
-						  </th>
-						  
+						  <th>${ allCategories.get(good.category.toString()) }</th>
 						  <th><a href="http://localhost:8080/webstorepractise/admin/manageGoods?action=getGood&gId=${good.id }&currentPage=${pageInfo.currentPage}">Edit Item</a></th>
 						  <th><a href="http://localhost:8080/webstorepractise/admin/manageGoods?action=delete&gId=${good.id }&currentPage=${pageInfo.currentPage}">Delete Item</a></th>
 						</tr>
-					  </c:forEach>
+					</c:forEach>
 				</table>
 			</c:if>
 		  	
@@ -94,18 +95,17 @@
 		<div id="page" class="page_div"></div>
 	</div>
 	
+	<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/paging.js"></script>
-	<script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->	
 	<script>
 	
 	    $("#page").paging({
-	        pageNo:${pageInfo.currentPage},     /*当前选中的是哪一页*/
+	    	pageNo:${pageInfo.currentPage},     /*当前选中的是哪一页*/
 	        totalPage: ${pageInfo.totalPages},   /*共多少页*/
 	        totalSize: ${pageInfo.totalItems},    /*共多少条记录*/
 	        callback: function(num) {
 	        	$(window).attr("location", 
-	        			"http://localhost:8080/webstorepractise/admin/manageGoods?action=getPageData&currentPage="+num);
+	        			"${pageContext.request.contextPath}/goods/"+num+"/5");
 	        }  
 	    });
 	</script>

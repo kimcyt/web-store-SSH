@@ -9,4 +9,6 @@ import cn.ytc.webstore.utils.PageInfo;
 public interface GoodServiceInterface extends BaseServiceInterface<Good>{
 	
 	public PageInfo getPageInfo(int pageNo, int itemsPerPage);
+	
+	public PageInfo getPageInfoInCategory(int pageNo, int itemsPerPage, int category);
 }

@@ -24,43 +24,31 @@ public class GoodDaoImpl extends BaseDao<Good> implements GoodDaoInterface{
 		return getSession().get(new Good().getClass(), id);
 	}
 
-//	public List<Good> getPageGoods(int pageNo, int itemsPerPage) {
-//		//!!! in hql the table name must match exactly with model class name due to ORM
-//		//get items-per-page from request
-////		int itemsNum =Integer.parseInt(itemsPerPage);
-////		int start = (Integer.parseInt(pageNum)-1)*itemsNum;
-//////		if(!transaction.isActive())
-//////			transaction = session.beginTransaction();
-////		List<Good> goods = this.getPageGoods(start, start+itemsNum);
-////		String hql = "select count(g) from Good g";
-////		long count = (long)session.createQuery(hql).list().get(0);
-////		System.out.println("-------count is " + count);
-////		PageInfo pageInfo = PageInfo.getPageInfo(Integer.parseInt(pageNum), count, goods, itemsNum);
-//////		transaction.commit();
-////		return pageInfo;
-//		
-//		String sql = "FROM Good";
-////		String sql = "FROM Good";
-//		List<Good> goods = (List<Good>)getSession().createQuery(sql)
-//				.setFirstResult((pageNo-1)*itemsPerPage).setMaxResults(itemsPerPage).list();
-//		return goods;
-//	}
-
 	public PageInfo getPageInfo(int pageNo, int itemsPerPage) {
 		// TODO Auto-generated method stub
 		Session session = getSession();
-		String sql = "FROM Good";
-		List<Good> goods = (List<Good>)session.createQuery(sql)
+		List<Good> goods = (List<Good>)session.createQuery("FROM Good")
 				.setFirstResult((pageNo-1)*itemsPerPage).setMaxResults(itemsPerPage).list();
 		Query query = session.createQuery("select count(g) from Good g");
 		long count =((Number)query.iterate().next()).longValue();  
-		int totalP = (int)Math.ceil(count/itemsPerPage)+1;
+		int totalP = (int)Math.ceil(count/itemsPerPage);
 		PageInfo pageInfo = new PageInfo(goods, pageNo, totalP, count);
+		session.close(); 
+		//if close session after getting goods and not set lazy-init as false for good.gallery, goods.gallery 
+		//is not loaded until it is accessed in jsp, so when we try to load good.gallery, session is already closed.
 		return pageInfo;
 	}
 
 	public PageInfo getPageInfoInCategory(int pageNo, int itemsPerPage, int category) {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = getSession();
+		System.out.println("category is "+category);
+		List<Good> goods = (List<Good>)session.createQuery("FROM Good good WHERE good.category="+category)
+				.setFirstResult((pageNo-1)*itemsPerPage).setMaxResults(itemsPerPage).list();
+		Query query = session.createQuery("select count(good) from Good good WHERE good.category="+category);
+		long count =((Number)query.iterate().next()).longValue();  
+		int totalP = (int)Math.ceil(count/itemsPerPage);
+		PageInfo pageInfo = new PageInfo(goods, pageNo, totalP, count);
+		session.close();
+		return pageInfo;
 	}
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import cn.ytc.webstore.model.Administrator;
 import cn.ytc.webstore.model.User;
 import cn.ytc.webstore.service.UserServiceImpl;
 import cn.ytc.webstore.service.UserServiceInterface;
@@ -54,7 +55,8 @@ public class UserController extends BaseController{
 	
 	@ResponseBody
 	@RequestMapping(path="/user/{id}", method=RequestMethod.POST)
-	public RequestResult login(@RequestParam String userId, @RequestParam String password,  HttpServletResponse res, HttpSession session) {
+	public RequestResult login(Model model, @RequestParam String userId, @RequestParam String password,  
+			HttpServletResponse res, HttpSession session) {
 		System.out.println("login is working " + userId +"  "+ password);
 
 //		if(user.getUserId()==null || user.getPassword()==null) {
@@ -67,12 +69,13 @@ public class UserController extends BaseController{
 //			return "login";
 //		}
 
-//		TODO: CHANGE the way to recognize type of user
 		RequestResult rr = new RequestResult();
 		
 		if(userService.isAdmin(userId, password)) {
 			System.out.println("admin verified----");
-			rr.setUrl("/goods/1/5/admin");
+			rr.setUrl("/goods/1/5");
+			session.setAttribute("currentUser", new Administrator(userId, "admin", password));
+//			model.addAttribute("user", new Administrator(userId, "admin", password));
 //			"/goods/{pageNo}/{itemsPerPage}/{userType}"
 			return rr;
 		}
@@ -81,9 +84,9 @@ public class UserController extends BaseController{
 		if(verified) {
 			User user = userService.getUser(userId);
 			session.setAttribute("currentUser", user);
-//			model.addAttribute("user", user);
-			rr.setUrl("/main");  
-//			/goods/1/10/customer
+			model.addAttribute("user", user);
+			rr.setUrl("/goods/1/20");  
+//			
 		} else {
 //			model.addAttribute("error", "Invalid userId or password.");
 //			return "forward:/";

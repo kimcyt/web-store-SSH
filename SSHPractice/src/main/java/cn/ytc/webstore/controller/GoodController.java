@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import cn.ytc.webstore.service.GoodServiceInterface;
 import cn.ytc.webstore.service.UserServiceInterface;
 import cn.ytc.webstore.utils.PageInfo;
+import cn.ytc.webstore.model.Administrator;
 import cn.ytc.webstore.model.Category;
 import cn.ytc.webstore.model.Good;
 
@@ -30,16 +32,16 @@ public class GoodController extends BaseController{
 	@Autowired
 	GoodServiceInterface goodService;
 	
-//	@ModelAttribute
-//	public void getAction(@RequestParam String action, Model model, HttpSession session) {
-////		model.addAttribute("good", new Good());
-////		session.setAttribute("allCategories", Category.getCategories());
-//	}
+	@ModelAttribute
+	public void init(HttpSession session) {
+//		model.addAttribute("good", new Good());
+		if(session.getAttribute("allCategories")==null)
+			session.setAttribute("allCategories", Category.getCategoryMap());
+	}
 	
 	
-	@RequestMapping(path="/goods/{pageNo}/{items}/{user}", method=RequestMethod.GET)
-	public String displayPageGoods(Model model, @PathVariable("pageNo") int pageNo, @PathVariable("items") int itemsPerPage, 
-			@PathVariable("user") String userType) {
+	@RequestMapping(path="/goods/{pageNo}/{items}")
+	public String displayPageGoods(HttpSession session, Model model, @PathVariable("pageNo") int pageNo, @PathVariable("items") int itemsPerPage) {
 		System.out.println("displaying goods");
 		//given pageNO and items per page, store goods in model and jump to main/itemsManagement based on user type
 //		model.addAttribute("pageNo", pageNo);
@@ -47,10 +49,27 @@ public class GoodController extends BaseController{
 		PageInfo pageInfo = goodService.getPageInfo(pageNo, itemsPerPage);
 		System.out.println("good obtained: "+pageInfo.getPageGoods());
 		model.addAttribute("pageInfo", pageInfo);
-		if(userType.equals("customer")) {
-			return "main";
-		} else {
+		if(session.getAttribute("currentUser") instanceof Administrator) {
 			return "itemsManagement";
+		} else {
+			return "main";
+		}
+	}
+	/*
+	 * 
+	 */
+
+	@RequestMapping(path="/goods/{pageNo}/{items}/{category}", method=RequestMethod.GET)
+	public String displayPageGoodsInCategory(HttpSession session, Model model, @PathVariable("pageNo") int pageNo, 
+			@PathVariable("items") int itemsPerPage, @PathVariable("category") int category) {
+		PageInfo pageInfo = goodService.getPageInfoInCategory(pageNo, itemsPerPage, category);
+//		System.out.println("good obtained: "+pageInfo.getPageGoods());
+		model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("currentCategory", category);
+		if(session.getAttribute("currentUser") instanceof Administrator) {
+			return "itemsManagement";
+		} else {
+			return "main";
 		}
 	}
 	
@@ -62,21 +81,15 @@ public class GoodController extends BaseController{
 	//@RequestParam String name, @RequestParam String price, @RequestParam int category, @RequestParam String gallery
 	@RequestMapping(path="/good", method=RequestMethod.POST)
 	public String addGood(HttpSession session, Model model, Good good, @RequestParam(value = "image", required = false) MultipartFile file) {
-//		Double.parseDouble(price);
-//		goodService.add(new Good(name, Double.parseDouble(price), null, category));
-//		System.out.println("adding good "+new Good(name, Double.parseDouble(price), null, category));
-		//store image
-		String fullPath = null;
+		String newName = "";
 		if(!file.isEmpty()) {
 			//get real path for image folder
 //			String path = session.getServletContext().getRealPath("/resources/image/"+good.getCategory());
 			String path = "C:\\Users\\yunti\\Desktop\\java\\spring\\"
 					+ "spring projects\\SSH web-store\\SSHPractice\\src\\main\\webapp\\resources\\image\\"+good.getCategory();
 			String oldName = file.getOriginalFilename();
-			String newName = good.hashCode()+oldName;
+			newName = good.hashCode()+oldName;
 			File uploadFile = new File(path, newName);
-			fullPath = path+"\\"+newName;
-			System.out.println("newName:" + newName + "--"+fullPath);
 			if(!uploadFile.getParentFile().exists()) {
 				uploadFile.getParentFile().mkdirs();
 			}
@@ -94,13 +107,14 @@ public class GoodController extends BaseController{
 					e.printStackTrace();
 				}
 			}	
+		} else {
+			model.addAttribute("error", "Item not added: image missing.");
 		}
 		
-		if(fullPath != null)
-			good.getGallery().add(fullPath);
+		good.getGallery().add(good.getCategory()+"/"+newName);
 		System.out.println("adding good "+good);
 		goodService.add(good);
-		return "forward:/goods/1/5/admin";
+		return "forward:/goods/1/5";
 	}
 
 	@RequestMapping(path="/good/{id}", method=RequestMethod.PUT)

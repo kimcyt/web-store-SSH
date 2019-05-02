@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -28,7 +28,7 @@
 	</div>
 	<div class="header_mid row">
 		<div id="icon" class="col-md-3">
-			<img src="../images/logo.png">
+			<img src="${pageContext.request.contextPath}/img/logo.png">
 		</div>
 		<div class="center col-md-6">
 			<div class="input-group mb-3 search_box">
@@ -51,21 +51,35 @@
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav">
 					<li class="nav-item">
-						<a class="nav-link active" href="#">All Items
-							<span class="sr-only">(current)</span>
-						</a>
+						<c:if test="${empty currentCategory}">
+							<a class="nav-link active" href="${pageContext.request.contextPath}/goods/1/20/">All Items
+								<span class="sr-only">(current)</span>
+							</a>
+						</c:if>
+						<c:if test="${!empty currentCategory}">
+							<a class="nav-link" href="${pageContext.request.contextPath}/goods/1/20/">All Items
+								<span class="sr-only">(current)</span>
+							</a>
+						</c:if>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="#">Office Supplies</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Furniture</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Fresh Produce</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Books Audio</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Cosmetics</a></li>
+					<c:forEach items="${allCategories}" var="category">
+						<c:if test="${currentCategory==category.key}">
+							<li class="nav-item">
+							<a class="nav-link active" href="${pageContext.request.contextPath}/goods/1/20/${category.key}">${category.value}</a>
+							</li>
+						</c:if>
+						<c:if test="${currentCategory!=category.key}">
+							<li class="nav-item">
+							<a class="nav-link" href="${pageContext.request.contextPath}/goods/1/20/${category.key}">${category.value}</a>
+							</li>
+						</c:if>
+					</c:forEach>
 				</ul>
 			</div>
 		</nav>
 	</div>
 	
-
+	
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 		crossorigin="anonymous"></script>

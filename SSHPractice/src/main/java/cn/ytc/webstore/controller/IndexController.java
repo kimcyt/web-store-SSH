@@ -27,11 +27,11 @@ public class IndexController extends BaseController{
 		return "signup";
 	}
 	
-	@RequestMapping("/main")
-	public String main() {
-		System.out.println("iam in main");
-		return "main";
-	}
+//	@RequestMapping("/main")
+//	public String main() {
+//		System.out.println("iam in main");
+//		return "main";
+//	}
 
 //	@RequestMapping("/items")
 //	public String items() {

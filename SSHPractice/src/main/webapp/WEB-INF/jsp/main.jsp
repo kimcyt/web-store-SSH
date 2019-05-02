@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@page import="cn.ytc.webstore.utils.PageInfo"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>main</title>
+<title>Web Store</title>
 <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/pageStyle.css">
 </head>
 <body>
 
@@ -46,6 +47,7 @@
 			</div>
 		</div>
 
+	<!--  
 		<div class="on_sale" >
 			<div class="title row">
 				<h2>Items On Sale</h2> 
@@ -73,35 +75,41 @@
 					</li>
 				</ul>
 		</div>
-
+	-->
+		
 		<div class="regular-items">
 			<div class="title row">
 				<h2>Regular Items</h2>
 			</div>
 			<ul class="items row">
+				<c:forEach items="${pageInfo.pageGoods}" var="good" varStatus="status">
 				<li class="items col-3 h-60">
-						<a href=""> <img src="/webstorepractise/images/TB2gHW.hnqWBKNjSZFxXXcpLpXa_!!0-saturn_solar.jpg_220x220.jpg"></a>
-						<p class="item-name">Name</p>
-						<p class="item-price">$ price</p>
+						<a href=""> <img src="${pageContext.request.contextPath}/img/${good.gallery.get(0)}"></a>
+						<p class="item-name">${good.name}</p>
+						<p class="item-price">$ ${good.price}</p>
 				</li>
-				<li class="items col-3 h-60">
-						<a href=""> <img src="/webstorepractise/images/TB2gHW.hnqWBKNjSZFxXXcpLpXa_!!0-saturn_solar.jpg_220x220.jpg"></a>
-						<p class="item-name">Name</p>
-						<p class="item-price">$ price</p>
-				</li>
-				<li class="items col-3 h-60">
-						<a href=""> <img src="/webstorepractise/images/TB2gHW.hnqWBKNjSZFxXXcpLpXa_!!0-saturn_solar.jpg_220x220.jpg"></a>
-						<p class="item-name">Name</p>
-						<p class="item-price">$ price</p>
-				</li>
-				
+				</c:forEach>
 			</ul>
 		</div>
-
+		<div id="page" class="page_div"></div>
+		<p id="error"><p>
 		<%@ include file="footer.jsp"%>
 
 	</div>
 	
+	<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/paging.js"></script>
+	<script>
+	    $("#page").paging({
+	    	pageNo:${pageInfo.currentPage},     /*当前选中的是哪一页*/
+	        totalPage: ${pageInfo.totalPages},   /*共多少页*/
+	        totalSize: ${pageInfo.totalItems},    /*共多少条记录*/
+	        callback: function(num) {
+	        	$(window).attr("location", 
+	        			"${pageContext.request.contextPath}/goods/"+num+"/5");
+	        }  
+	    });
+	</script>
 	<script>
 		//todo: create apis to retrive images and item info, use js to dynamiclly display them
 	</script>

@@ -17,7 +17,12 @@
 	<mvc:resources location="/resources/css/" mapping="/css/**"/>
 	<mvc:resources location="/resources/image/" mapping="/img/**"/>
 	<mvc:resources location="/resources/js/" mapping="/js/**"/>
-	<mvc:view-controller path="/users" view-name="signUp"/>
+	
+	<mvc:resources location="/resources/image/0" mapping="/img/0/**"/>
+	<mvc:resources location="/resources/image/1" mapping="/img/1/**"/>
+	<mvc:resources location="/resources/image/2" mapping="/img/2/**"/>
+	<mvc:resources location="/resources/image/3" mapping="/img/3/**"/>
+	<mvc:resources location="/resources/image/4" mapping="/img/4/**"/>
 
 	<context:component-scan base-package="cn.ytc.webstore" use-default-filters="false">
 		<context:include-filter type="annotation"
