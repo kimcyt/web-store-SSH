@@ -13,6 +13,7 @@ import cn.ytc.webstore.model.User;
 @Controller
 public class IndexController extends BaseController{
 	
+	
 	@RequestMapping("/")
 	public String login(Model model) {
 		System.out.println("iam in index");
@@ -26,7 +27,13 @@ public class IndexController extends BaseController{
 		System.out.println("iam in signup");
 		return "signup";
 	}
-	
+
+	@RequestMapping("/logout")
+	public String logOut(HttpSession session) {
+		System.out.println("iam logging out");
+		session.setAttribute("currentUser", null);
+		return "login";
+	}
 //	@RequestMapping("/main")
 //	public String main() {
 //		System.out.println("iam in main");

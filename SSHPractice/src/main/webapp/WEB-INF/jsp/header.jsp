@@ -16,23 +16,23 @@
 		<div class="col-md-5 offset-md-7">
 			<!-- check if user already login -->
 			<c:if test="${empty currentUser }">
-				<a href="login.jsp">Login</a>
-				<a href="signup.jsp">Sign up</a>
+				<a href="${pageContext.request.contextPath}/">Login</a>
+				<a href="${pageContext.request.contextPath}/signup">Sign up</a>
 			</c:if>
 			<c:if test="${!empty currentUser }">
 				Welcome! <a href=""> <b>${currentUser.username}</b></a>
-				<a href=""> Logout</a>
+				<a href="${pageContext.request.contextPath}/logout"> Log Out</a>
 			</c:if>
 			<a href="">Shopping Cart</a>
 		</div>
 	</div>
 	<div class="header_mid row">
-		<div id="icon" class="col-md-3">
+		<div id="icon" class="col-md-4">
 			<img src="${pageContext.request.contextPath}/img/logo.png">
 		</div>
 		<div class="center col-md-6">
 			<div class="input-group mb-3 search_box">
-				<input type="text" class="form-control" placeholder="Search"
+				<input type="text" class="form-control" placeholder="Enter keywords"
 					aria-label="Search" aria-describedby="search">
 				<div class="input-group-append">
 					<button class="btn btn-outline-secondary" type="button" id="search">Search</button>
@@ -41,43 +41,6 @@
 		</div>
 	</div>
 	
-	<div class="header_bottom row">
-		<nav class="col-md-12 navbar navbar-expand-lg navbar-light bg-light"> 
-			<button class="navbar-toggler" type="button" data-toggle="collapse"
-				data-target="#navbarNav" aria-controls="navbarNav"
-				aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav">
-					<li class="nav-item">
-						<c:if test="${empty currentCategory}">
-							<a class="nav-link active" href="${pageContext.request.contextPath}/goods/1/20/">All Items
-								<span class="sr-only">(current)</span>
-							</a>
-						</c:if>
-						<c:if test="${!empty currentCategory}">
-							<a class="nav-link" href="${pageContext.request.contextPath}/goods/1/20/">All Items
-								<span class="sr-only">(current)</span>
-							</a>
-						</c:if>
-					</li>
-					<c:forEach items="${allCategories}" var="category">
-						<c:if test="${currentCategory==category.key}">
-							<li class="nav-item">
-							<a class="nav-link active" href="${pageContext.request.contextPath}/goods/1/20/${category.key}">${category.value}</a>
-							</li>
-						</c:if>
-						<c:if test="${currentCategory!=category.key}">
-							<li class="nav-item">
-							<a class="nav-link" href="${pageContext.request.contextPath}/goods/1/20/${category.key}">${category.value}</a>
-							</li>
-						</c:if>
-					</c:forEach>
-				</ul>
-			</div>
-		</nav>
-	</div>
 	
 	
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

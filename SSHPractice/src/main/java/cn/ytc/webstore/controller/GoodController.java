@@ -74,8 +74,10 @@ public class GoodController extends BaseController{
 	}
 	
 	@RequestMapping(path="/good/{id}", method=RequestMethod.GET)
-	public String displayGood() {
-		return null;
+	public String displayGood(Model model, @PathVariable("id") int id) {
+		Good good = goodService.getGood(id);
+		model.addAttribute("good", good);
+		return "displayGood";
 	}
 
 	//@RequestParam String name, @RequestParam String price, @RequestParam int category, @RequestParam String gallery

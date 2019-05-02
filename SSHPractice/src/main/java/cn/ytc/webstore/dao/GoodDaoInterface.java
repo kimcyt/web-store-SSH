@@ -10,4 +10,8 @@ public interface GoodDaoInterface extends BaseDaoInterface<Good>{
 	public PageInfo getPageInfo(int pageNo, int itemsPerPage);
 	
 	public PageInfo getPageInfoInCategory(int pageNo, int itemsPerPage, int category);
+	
+	public Good getOne(int id);
+	
+	public List<Good> getAll();
 }

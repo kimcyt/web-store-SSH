@@ -70,7 +70,7 @@ body{
 }
 
 .body .form div label{
-    margin-right: 10px;
+    padding-right: 10px;
     font-size: 20px;
     width: 30%;
 }

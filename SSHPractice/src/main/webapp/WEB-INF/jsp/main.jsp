@@ -14,6 +14,44 @@
 	<div class="container">
 		<%@ include file="header.jsp"%>
 		
+		<div class="header_bottom row">
+			<nav class="col-md-12 navbar navbar-expand-lg navbar-light bg-light"> 
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarNav" aria-controls="navbarNav"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<c:if test="${empty currentCategory}">
+								<a class="nav-link active" href="${pageContext.request.contextPath}/goods/1/20/">All Items
+									<span class="sr-only">(current)</span>
+								</a>
+							</c:if>
+							<c:if test="${!empty currentCategory}">
+								<a class="nav-link" href="${pageContext.request.contextPath}/goods/1/20/">All Items
+									<span class="sr-only">(current)</span>
+								</a>
+							</c:if>
+						</li>
+						<c:forEach items="${allCategories}" var="category">
+							<c:if test="${currentCategory==category.key}">
+								<li class="nav-item">
+								<a class="nav-link active" href="${pageContext.request.contextPath}/goods/1/20/${category.key}">${category.value}</a>
+								</li>
+							</c:if>
+							<c:if test="${currentCategory!=category.key}">
+								<li class="nav-item">
+								<a class="nav-link" href="${pageContext.request.contextPath}/goods/1/20/${category.key}">${category.value}</a>
+								</li>
+							</c:if>
+						</c:forEach>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		
 		<div class="row" >
 			<div id="carouselIndicators" class="carousel slide col-md-12 ads"
 				data-ride="carousel">
@@ -25,14 +63,13 @@
 				</ol>
 				<div class="carousel-inner">
 					<div class="carousel-item active">
-						<img class="d-block w-100"
-							src="/webstorepractise/images/u=547447817,3063273168&fm=200&gp=0.jpg"
-							alt="First slide">
+						<img class="d-block" src="${pageContext.request.contextPath}/img/ad1.jpg">
 					</div>
 					<div class="carousel-item">
-						<img class="d-block w-100"
-							src=".../800x400?auto=yes&bg=666&fg=444&text=Second slide"
-							alt="Second slide">
+						<img class="d-block" src="${pageContext.request.contextPath}/img/ad2.jpg">
+					</div>
+					<div class="carousel-item">
+						<img class="d-block" src="${pageContext.request.contextPath}/img/ad3.jpg">
 					</div>
 				</div>
 				<a class="carousel-control-prev" href="#carouselExampleIndicators"
@@ -84,9 +121,9 @@
 			<ul class="items row">
 				<c:forEach items="${pageInfo.pageGoods}" var="good" varStatus="status">
 				<li class="items col-3 h-60">
-						<a href=""> <img src="${pageContext.request.contextPath}/img/${good.gallery.get(0)}"></a>
-						<p class="item-name">${good.name}</p>
-						<p class="item-price">$ ${good.price}</p>
+					<a href="${pageContext.request.contextPath}/good/${good.id}"> <img src="${pageContext.request.contextPath}/img/${good.gallery.get(0)}"></a>
+					<p class="item-name">${good.name}</p>
+					<p class="item-price">$${good.price}</p>
 				</li>
 				</c:forEach>
 			</ul>

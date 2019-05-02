@@ -25,4 +25,9 @@ public class GoodServiceImpl extends BaseService<Good> implements GoodServiceInt
 		// TODO Auto-generated method stub
 		return goodDao.getPageInfoInCategory(pageNo, itemsPerPage, category);
 	}
+
+	public Good getGood(int id) {
+		// TODO Auto-generated method stub
+		return goodDao.getOne(id);
+	}
 }

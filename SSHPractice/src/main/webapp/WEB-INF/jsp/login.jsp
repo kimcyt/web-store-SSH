@@ -21,14 +21,14 @@
 		<div class="row">
 			<div class="col-md-4 offset-md-4 middle-part">
 	        	<div class="login"> 
-	            	<form:form onsubmit="return validateInputs()" modelAttribute="user" action="${pageContext.request.contextPath}/user" method="POST">
+	            	<form onsubmit="return validateInputs()" action="${pageContext.request.contextPath}/user" method="POST">
 	                	<div class="user_inputs">
 	                    	<img src="${pageContext.request.contextPath}/img/user.png">
-	                    	<form:input id="userId" type="text" path="userId" autofocus="true" required="true"/> 
+	                    	<input id="userId" type="text" name="userId" autofocus="true" required="true"/> 
 	                	</div>
 	                	<div class="user_inputs">
 	                    	<img src="${pageContext.request.contextPath}/img/pwd.png">
-	                    	<form:input id="password" type="password" path="password" required="true"/> 
+	                    	<input id="password" type="password" name="password" required="true"/> 
 	                	</div>
 	                	<div>
 	                		<input type="submit" value="Login"> 
@@ -38,7 +38,7 @@
 	                    	<a href="${pageContext.request.contextPath}/signup">Sign Up</a>
 	                	</div>
 	                	<p id="error">${error}<p>
-	            	</form:form>
+	            	</form>
 	        	</div>
 			</div>
 		</div>
