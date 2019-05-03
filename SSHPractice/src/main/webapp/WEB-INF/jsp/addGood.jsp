@@ -31,14 +31,14 @@
 		<c:if test="${!empty allCategories}">
 			<form:select path="category">
 				<c:forEach items="${allCategories }" var="category">
-					<option value="${category.NO }">${category.name }</option>
+					<option value="${category.key }">${category.value }</option>
 				</c:forEach>	
 			</form:select>
 		</c:if>
 		
 		<input type="submit" value="Add Item"> 
 	</form:form>
-	<p>${error}"</p>
+	<p>${error}</p>
 	<br>
 	<a href="${pageContext.request.contextPath}/goods/1/5">Go Back</a>
 	<!-- 

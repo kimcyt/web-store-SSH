@@ -19,7 +19,7 @@
 				<br>
 				<div class="row info">
 					<div class="col-md-5">
-						<img src="${pageContext.request.contextPath}/img/${good.gallery.get(0)}">
+						<img src="${pageContext.request.contextPath}/img/${good.category}/${good.gallery.get(0)}">
 					</div>
 					<div class="col-md-5 offset-md-2">
 						<h4>Price: ${good.price }</h4>

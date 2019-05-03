@@ -21,8 +21,8 @@ public class BaseService<T> implements BaseServiceInterface<T> {
 		dao.add(obj);
 	}
 	
-	public void delete(T obj) {
-		dao.delete(obj);
+	public void delete(Class clazz, int id) {
+		dao.delete(clazz,id);
 	}
 	
 //	public T getOne(int id) {

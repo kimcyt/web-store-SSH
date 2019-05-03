@@ -7,6 +7,6 @@ public interface BaseDaoInterface<T> {
 	
 	public void update(T obj);
 	
-	public void delete(T obj);
+	public void delete(Class clazz, int id);
 	
 }

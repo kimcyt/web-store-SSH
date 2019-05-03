@@ -36,6 +36,16 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
+	<!-- 解决 PUT method (doesnt work)-->  
+	<filter>
+	    <filter-name>httpPutFormContentFilter</filter-name>
+	    <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>httpPutFormContentFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 	<!-- 解决no-session问题过滤器 
 		通过filter来让session在jsp页面完毕后再关闭session
 		注意: 所有Filter的配置都需要放置在struts2入口过滤器配置之前

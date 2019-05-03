@@ -121,7 +121,7 @@
 			<ul class="items row">
 				<c:forEach items="${pageInfo.pageGoods}" var="good" varStatus="status">
 				<li class="items col-3 h-60">
-					<a href="${pageContext.request.contextPath}/good/${good.id}"> <img src="${pageContext.request.contextPath}/img/${good.gallery.get(0)}"></a>
+					<a href="${pageContext.request.contextPath}/good/${good.id}"> <img src="${pageContext.request.contextPath}/img/${good.category}/${good.gallery.get(0)}"></a>
 					<p class="item-name">${good.name}</p>
 					<p class="item-price">$${good.price}</p>
 				</li>

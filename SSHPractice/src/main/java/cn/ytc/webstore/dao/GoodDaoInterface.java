@@ -14,4 +14,5 @@ public interface GoodDaoInterface extends BaseDaoInterface<Good>{
 	public Good getOne(int id);
 	
 	public List<Good> getAll();
+	
 }

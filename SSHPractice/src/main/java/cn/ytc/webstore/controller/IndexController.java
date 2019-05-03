@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.ytc.webstore.model.Category;
@@ -12,6 +13,7 @@ import cn.ytc.webstore.model.User;
 
 @Controller
 public class IndexController extends BaseController{
+	
 	
 	
 	@RequestMapping("/")
@@ -34,6 +36,14 @@ public class IndexController extends BaseController{
 		session.setAttribute("currentUser", null);
 		return "login";
 	}
+
+//	
+//	@RequestMapping("/delete/{id}")
+//	public String deleteGood(@PathVariable String id) {
+//		session.setAttribute("currentUser", null);
+//		return "/good";
+//	}
+	
 //	@RequestMapping("/main")
 //	public String main() {
 //		System.out.println("iam in main");

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+
+
 /*
  * if @transcational is added, all beans of implementational classes will
  * become proxy and fail to be loaded
@@ -26,10 +28,12 @@ public class BaseDao<T> implements BaseDaoInterface<T>{
 	
 	
 	public Session getSession() {
+		//with openSession(), need to close it manually
 		return sessionFactory.openSession();
 	}
 	
 	public void add(T obj) {
+		//for data manipulation(save/update/delete), must commit transaction to execute
 		Session sess = getSession();
 		Transaction tran = sess.beginTransaction();
 		sess.save(obj);
@@ -40,13 +44,20 @@ public class BaseDao<T> implements BaseDaoInterface<T>{
 	
 	public void update(T obj) {
 		Session sess = getSession();
+		Transaction tran = sess.beginTransaction();
 		sess.update(obj);
+		tran.commit();
 		sess.close();
 	}
 	
-	public void delete(T obj) {
+	public void delete(Class clazz, int id) {
 		Session sess = getSession();
-		sess.delete(obj);
+		Transaction tran = sess.beginTransaction();
+		Object obj = sess.load(clazz, id);
+		if(obj!=null) {
+			sess.delete(obj);
+			tran.commit();
+		}
 		sess.close();
 	}
 

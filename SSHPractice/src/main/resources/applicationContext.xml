@@ -10,21 +10,24 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 		
-	<!--    
+	<!-- 
+	it fails to load some beans and throws error
 	<context:component-scan base-package="cn.ytc.webstore" use-default-filters="false">
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller"/>
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.web.bind.annotation.ControllerAdvice"/>	
 	</context:component-scan>
-	-->
-
+	 -->
+	
+	
 	<context:component-scan base-package="cn.ytc.webstore.dao">
 	</context:component-scan>
 	<context:component-scan base-package="cn.ytc.webstore.model">
 	</context:component-scan>
 	<context:component-scan base-package="cn.ytc.webstore.service">
 	</context:component-scan>
+
 
 	
 	

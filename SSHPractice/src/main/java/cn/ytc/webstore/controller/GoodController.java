@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import cn.ytc.webstore.service.GoodServiceInterface;
 import cn.ytc.webstore.service.UserServiceInterface;
+import cn.ytc.webstore.utils.ImageTools;
 import cn.ytc.webstore.utils.PageInfo;
+import cn.ytc.webstore.utils.RequestResult;
 import cn.ytc.webstore.model.Administrator;
 import cn.ytc.webstore.model.Category;
 import cn.ytc.webstore.model.Good;
@@ -39,6 +42,7 @@ public class GoodController extends BaseController{
 			session.setAttribute("allCategories", Category.getCategoryMap());
 	}
 	
+	//todo: fix category folder bug: when changing item category, image can no longer be found
 	
 	@RequestMapping(path="/goods/{pageNo}/{items}")
 	public String displayPageGoods(HttpSession session, Model model, @PathVariable("pageNo") int pageNo, @PathVariable("items") int itemsPerPage) {
@@ -82,51 +86,57 @@ public class GoodController extends BaseController{
 
 	//@RequestParam String name, @RequestParam String price, @RequestParam int category, @RequestParam String gallery
 	@RequestMapping(path="/good", method=RequestMethod.POST)
-	public String addGood(HttpSession session, Model model, Good good, @RequestParam(value = "image", required = false) MultipartFile file) {
-		String newName = "";
-		if(!file.isEmpty()) {
-			//get real path for image folder
-//			String path = session.getServletContext().getRealPath("/resources/image/"+good.getCategory());
-			String path = "C:\\Users\\yunti\\Desktop\\java\\spring\\"
-					+ "spring projects\\SSH web-store\\SSHPractice\\src\\main\\webapp\\resources\\image\\"+good.getCategory();
-			String oldName = file.getOriginalFilename();
-			newName = good.hashCode()+oldName;
-			File uploadFile = new File(path, newName);
-			if(!uploadFile.getParentFile().exists()) {
-				uploadFile.getParentFile().mkdirs();
-			}
-			if(uploadFile.exists()) {
-				model.addAttribute("error", "Item not added: failed to upload image - image name already exists.");
-			} else {
-				try {
-					file.transferTo(uploadFile);
-				} catch (IllegalStateException e) {
-					// TODO Auto-generated catch block
-					model.addAttribute("error", "Item not added: failed to upload image - error occured while uploading image.");
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}	
-		} else {
-			model.addAttribute("error", "Item not added: image missing.");
-		}
-		
-		good.getGallery().add(good.getCategory()+"/"+newName);
+	public String addGood(Model model, Good good, @RequestParam(value = "image", required = false) MultipartFile file) {
+
 		System.out.println("adding good "+good);
-		goodService.add(good);
-		return "forward:/goods/1/5";
+		try {
+			goodService.addGood(good, file);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("error", e.getMessage());
+			return "addGood";
+		}
+
+		return "redirect:/goods/1/5";
 	}
 
-	@RequestMapping(path="/good/{id}", method=RequestMethod.PUT)
-	public String updateGood() {
-		return null;
+	@RequestMapping(path="/good/{id}", method=RequestMethod.POST) //still dont know how to use PUT with file 
+	public String updateGood(Model model, Good good, @RequestParam(value = "image", required = false) MultipartFile file) {
+
+		System.out.println("updatingGood "+good);
+//		goodService.update(good);
+		try {
+			goodService.updateGood(good, file);
+		} catch(Exception e) {
+			e.printStackTrace();
+			model.addAttribute("error", e.getMessage());
+			return "updateGood";
+		}
+		return "redirect:/goods/1/5";
 	}
 	
 
+	@ResponseBody
 	@RequestMapping(path="/good/{id}", method=RequestMethod.DELETE)
-	public String deleteGood() {
-		return null;
+	public RequestResult deleteGood(@PathVariable int id) {
+		RequestResult rr = new RequestResult();
+		System.out.println("deleting good");
+		try {
+			goodService.delete(Good.class, id);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		rr.setUrl("/goods/1/5");
+		return rr;
 	}
+	
+	@RequestMapping("/update/{id}")
+	public String update(Model model, @PathVariable int id) {
+		System.out.println("updating");
+		model.addAttribute("good", goodService.getGood(id));
+		return "updateGood";
+	}
+	
+	
 }

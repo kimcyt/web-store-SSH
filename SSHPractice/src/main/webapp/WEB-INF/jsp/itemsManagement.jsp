@@ -80,12 +80,18 @@
 					<c:forEach items="${pageInfo.pageGoods}" var="good" varStatus="status">
 						<tr >
 						  <th>${good.id}</th>
-						  <th><img id="image" src="${pageContext.request.contextPath}/img/${good.gallery.get(0)}" alt="image not found"></th>
+						  <c:if test="${empty good.gallery}">
+						      <th><img id="image" src="" alt="image not found"></th>
+						  </c:if>
+						  <c:if test="${!empty good.gallery}">
+						      <th><img id="image" src="${pageContext.request.contextPath}/img/${good.category}/${good.gallery.get(0)}" alt="image not found"></th>
+						  </c:if>
+						  
 						  <th>${good.name }</th>
 						  <th>${good.price }</th>
-						  <th>${ allCategories.get(good.category.toString()) }</th>
-						  <th><a href="http://localhost:8080/webstorepractise/admin/manageGoods?action=getGood&gId=${good.id }&currentPage=${pageInfo.currentPage}">Edit Item</a></th>
-						  <th><a href="http://localhost:8080/webstorepractise/admin/manageGoods?action=delete&gId=${good.id }&currentPage=${pageInfo.currentPage}">Delete Item</a></th>
+						  <th>${ allCategories.get(good.category)}</th>
+						  <th><a href="${pageContext.request.contextPath}/update/${good.id}">Edit Item</a></th>
+						  <th><a href="" id="${pageContext.request.contextPath}/good/${good.id}" onClick="deleteItem(this);return false;">Delete Item</a></th>
 						</tr>
 					</c:forEach>
 				</table>
@@ -98,6 +104,24 @@
 	<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/paging.js"></script>
 	<script>
+	
+		 function deleteItem(node) {
+		     let url = node.id;/*得到href的值*/
+			 $.ajax({
+		         url:url,
+			     type:'DELETE',/*DELETE、POST */
+			     success:function (result) {
+			         console.log("delete result", result);
+			         if(result.error){
+			        	 alert(result.error);
+			         } else{
+			        	 location.href = "${pageContext.request.contextPath}" + result.url;	
+			         }
+			     }
+		   	 })
+	     };
+		     
+
 	
 	    $("#page").paging({
 	    	pageNo:${pageInfo.currentPage},     /*当前选中的是哪一页*/

@@ -39,7 +39,8 @@
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 	
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+	<!-- tried to resolve PUT request but doesnt work -->
+	<bean id="multipartResolver" class="cn.ytc.webstore.utils.PostAndPutCommonsMultipartResolver" >
     	<property name="maxUploadSize" value="5000000" />
 	</bean>
 
